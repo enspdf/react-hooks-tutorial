@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { useForm } from './useForm';
 import Hello from './Hello';
 import { useFetch } from './useFetch';
+import { useMeasure } from './useMeasure';
 
 const App = () => {
   const [values, handleChange] = useForm({ email: '', password: '', firstName: '' });
@@ -15,6 +16,12 @@ const App = () => {
   }, [count]);*/
 
   const [showHello, setShowHello] = useState(true);
+
+  /*useLayoutEffect(() => {
+    console.log(inputRef.current.getBoundingClientRect());
+  }, []);*/
+
+  const [rect, inputRef2] = useMeasure([]);
 
   /*useEffect(() => {
     const onMouseMove = e => {
@@ -52,6 +59,7 @@ const App = () => {
           onChange={handleChange}
         />
         <input
+          ref={inputRef2}
           type="text"
           name="firstName"
           placeholder="first name"
