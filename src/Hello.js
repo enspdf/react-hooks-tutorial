@@ -1,15 +1,35 @@
-import React, {useEffect} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { useFetch } from './useFetch';
 
 export const Hello = () => {
-    useEffect(() => {
-        console.log('render');
-    
-        return () => {
-          console.log('unmount');
-        }
-      }, []);
+  /*useEffect(() => {
+      console.log('render');
+  
+      return () => {
+        console.log('unmount');
+      }
+    }, []);*/
 
-    return <div>Hello</div>
+  // const renders = useRef(0);
+  const [count, setCount] = useState(() =>
+    JSON.parse(localStorage.getItem("count"))
+  );
+
+  const { data, loading } = useFetch(`http://numbersapi.com/${count}/trivia`);
+
+  useEffect(() => {
+    localStorage.setItem('count', JSON.stringify(count));
+  }, [count]);
+
+  // console.log('Hello renders: ', renders.current++);
+
+  return (
+    <div>
+      <div>{!data ? 'Loading...' : data}</div>
+      <div>count: {count}</div>
+      <button onClick={() => setCount(c => c + 1)}>increment</button>
+    </div>
+  )
 }
 
 export default Hello;

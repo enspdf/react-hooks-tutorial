@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from './useForm';
 import Hello from './Hello';
 import { useFetch } from './useFetch';
 
 const App = () => {
   const [values, handleChange] = useForm({ email: '', password: '', firstName: '' });
-  const [count, setCount] = useState(() => JSON.parse(localStorage.getItem('count')));
-  const { data, loading } = useFetch(`http://numbersapi.com/${count}/trivia`);
+  // const [count, setCount] = useState(() => JSON.parse(localStorage.getItem('count')));
+  // const { data, loading } = useFetch(`http://numbersapi.com/${count}/trivia`);
+  const inputRef = useRef();
+  const hello = useRef(() => console.log('hello'));
 
-  useEffect(() => {
+  /*useEffect(() => {
     localStorage.setItem('count', JSON.stringify(count));
-  }, [count]);
+  }, [count]);*/
 
-  // const [showHello, setShowHello] = useState(true);
+  const [showHello, setShowHello] = useState(true);
 
   /*useEffect(() => {
     const onMouseMove = e => {
@@ -36,13 +38,14 @@ const App = () => {
 
   return (
     <div>
-      <div>{!data ? 'Loading...' : data}</div>
-      <div>count: {count}</div>
-      <button onClick={() => setCount(c => c + 1)}>increment</button>
+      {/*<div>{!data ? 'Loading...' : data}</div>*/}
+      {/*<div>count: {count}</div>*/}
+      {/*<button onClick={() => setCount(c => c + 1)}>increment</button>*/}
       <>
-        {/*<button onClick={() => setShowHello(!showHello)}>toggle</button>*/}
-        {/*showHello && <Hello />*/}
+        {<button onClick={() => setShowHello(!showHello)}>toggle</button>}
+        {showHello && <Hello />}
         <input
+          ref={inputRef}
           type="text"
           name="email"
           value={values.email}
@@ -61,6 +64,10 @@ const App = () => {
           value={values.password}
           onChange={handleChange}
         />
+        <button onClick={() => {
+          inputRef.current.focus();
+          hello.current();
+        }}>focus</button>
       </>
     </div>
   );
